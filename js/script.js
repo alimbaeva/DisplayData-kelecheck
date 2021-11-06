@@ -33,65 +33,80 @@ const products = [
   },
 ];
 
-const productsInner = document.querySelector(".products__inner");
-const allButton = document.querySelector(".all");
-const computerButton = document.querySelector(".computer");
-const tvButton = document.querySelector(".tv");
-const phoneButton = document.querySelector(".phone");
-
-console.log(allButton);
-console.log(computerButton);
-console.log(tvButton);
-console.log(phoneButton);
 
 
 window.addEventListener("load", function () {
-  displayProductsItems(products);
-});
+  const productsInner = document.querySelector(".products__inner");
+  const filterBtn = document.querySelectorAll(".products__filters-btn");
 
-function displayProductsItems(products) {
-  let displayProducts = products.map(function (item) {
-    return `<article key="${item.id}" class="products__item">
-      <img
-        class="products__item-photo"
-        src="${item.img}"
-        alt=""
-      />
-      <div class="products__item-info">
-        <header>
-          <h3>${item.title}</h3>
-          <span class="products__item-price">${item.price}сом</span>
-        </header>
-        <p class="products__item-text">
-          ${item.desc}
-        </p>
-      </div>
-    </article>`;
+  displayProductsItems(products);
+
+  filterBtn.forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      const categoryBtn = e.currentTarget.dataset.catigory;
+
+      const productCategory = products.filter(function (item) {
+        if (item.category === categoryBtn) {
+          return item;
+        }
+      });
+
+      if (categoryBtn === 'all') {
+        displayProductsItems(products);
+      } else {
+        displayProductsItems(productCategory)
+      }
+    });
   });
 
-  displayProducts = displayProducts.join("");
-  productsInner.innerHTML = displayProducts;
-}
 
+  function displayProductsItems(products) {
+    let displayProducts = products.map(function (item) {
+      return `<article key="${item.id}" class="products__item">
+        <img
+          class="products__item-photo"
+          src="${item.img}"
+          alt=""
+        />
+        <div class="products__item-info">
+          <header>
+            <h3>${item.title}</h3>
+            <span class="products__item-price">${item.price}сом</span>
+          </header>
+          <p class="products__item-text">
+            ${item.desc}
+          </p>
+        </div>
+      </article>`;
+    });
 
-// -------------------------------------------------
-computerButton.addEventListener('click', () => {
-  const resultProducts = products.filter(items => items.category === 'laptops');
-  displayProductsItems(resultProducts);
+    displayProducts = displayProducts.join("");
+    productsInner.innerHTML = displayProducts;
+  }
 });
 
-allButton.addEventListener('click', () => {
-  displayProductsItems(products);
-});
 
-tvButton.addEventListener('click', () => {
-  const resultProducts = products.filter(items => items.category === "tv");
-  displayProductsItems(resultProducts);
-});
+// // -------------------------------------------------
 
-phoneButton.addEventListener('click', () => {
-  const resultProducts = products.filter(items => items.category === "phones");
-  displayProductsItems(resultProducts);
-});
+// // Мы здесь берем кнопки по классу и сравкиваем категории итем по словам которое мы написали
+// // и выводим результат на экран с помошью функции displayProductsItems. Это только 1 вариан решения но оно не эфективное.
+// computerButton.addEventListener('click', () => {
+//   const resultProducts = products.filter(items => items.category === 'laptops');
+//   displayProductsItems(resultProducts);
+// });
 
-// ----------------------------------------------------
+// allButton.addEventListener('click', () => {
+//   displayProductsItems(products);
+// });
+
+// tvButton.addEventListener('click', () => {
+//   const resultProducts = products.filter(items => items.category === "tv");
+//   displayProductsItems(resultProducts);
+// });
+
+// phoneButton.addEventListener('click', () => {
+//   const resultProducts = products.filter(items => items.category === "phones");
+//   displayProductsItems(resultProducts);
+// });
+
+// // ----------------------------------------------------
