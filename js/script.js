@@ -50,6 +50,79 @@ const products = [
 ];
 
 
+window.addEventListener('load', function () {
+  const productsInner = this.document.querySelector('.products__inner');
+  const filtersContainer = this.document.querySelector('.products__btn');
+
+
+
+  function displayProductsItems(products) {
+    let displayProducts = products.map(function (item) {
+      return `<article key="${item.id}" class="products__item">
+            <img
+              class="products__item-photo"
+              src="${item.img}"
+              alt=""
+            />
+            <div class="products__item-info">
+              <header>
+                <h3>${item.title}</h3>
+                <span class="products__item-price">${item.price}сом</span>
+              </header>
+              <p class="products__item-text">
+                ${item.desc}
+              </p>
+            </div>
+          </article>`;
+    });
+    displayProducts = displayProducts.join("");
+    productsInner.innerHTML = displayProducts;
+  }
+
+  function displayFilterBtns() {
+    const categories = products.reduce(
+      function (values, item) {
+        if (!values.includes(item.category)) {
+          values.push(item.category);
+        }
+        return values;
+      },
+      ['all']
+    );
+
+    const categoryBtns = categories.map(function (category) {
+      return `
+    <button class="products__filters-btn" type="button" data-catigory="${category}">${category}</button>
+    `;
+    }).join('');
+
+    filtersContainer.innerHTML = categoryBtns;
+    const filterBtns = document.querySelectorAll('.products__filters-btn');
+
+    filterBtns.forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        const category = e.currentTarget.dataset.catigory;
+        const productCategory = products.filter(function (item) {
+          if (item.category === category) {
+            return item;
+          }
+        });
+        if (category === 'all') {
+          displayProductsItems(products);
+        } else {
+          displayProductsItems(productCategory);
+        }
+      });
+    });
+  }
+
+  displayProductsItems(products);
+  displayFilterBtns();
+});
+
+/*
+
+//  Сдесь идет работа с методом перебор кнопок и вывод их на экран map()!
 window.addEventListener("load", function () {
   const productsInner = document.querySelector(".products__inner");
   const productsBtn = document.querySelector(".products__btn");
@@ -122,7 +195,7 @@ window.addEventListener("load", function () {
 
 });
 
-
+*/
 
 
 // window.addEventListener("load", function () {
